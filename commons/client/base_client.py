@@ -49,3 +49,6 @@ class BaseClient(object):
 
     def support_external(self) -> bool:
         return True
+
+    def support_low_cardinality(self) -> bool:
+        return False

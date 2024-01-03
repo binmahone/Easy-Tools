@@ -10,16 +10,16 @@ clickhouse_info = {
 }
 
 spark_conf = SparkConf()
-spark_conf.set("spark.driver.memory", "10G")
+spark_conf.set("spark.driver.memory", "50G")
 spark_conf.set("spark.memory.fraction", "0.6")
 spark_conf.set("spark.memory.storageFraction", "0.3")
 spark_conf.set("spark.io.compression.codec", "LZ4")
 spark_conf.set("spark.memory.offHeap.enabled", "true")
-spark_conf.set("spark.memory.offHeap.size", "20G")
+spark_conf.set("spark.memory.offHeap.size", "50G")
 # spark_conf.set("spark.local.dir", "/shuffle/lishuai/tmp");
 spark_conf.set("parquet.block.size", "1073741824")
 
-output_dir = "/home/admin123/Downloads"
+output_dir = "/tmp/graphviz_output"
 
 shards_repartition = {
     "customer": (15, 3),

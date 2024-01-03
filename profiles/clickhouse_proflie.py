@@ -76,6 +76,9 @@ def merge_plan(datas: list):
         total_output_rows = 0
         total_output_bytes = 0
 
+        min_output_rows: int = sys.maxsize
+        max_output_rows: int = 0
+
         min_input_wait_us: int = sys.maxsize
         max_input_wait_us: int = 0
         min_output_wait_us: int = sys.maxsize
@@ -99,6 +102,9 @@ def merge_plan(datas: list):
             total_input_bytes = total_input_bytes + int(node.input_bytes)
             total_output_rows = total_output_rows + int(node.output_rows)
             total_output_bytes = total_output_bytes + int(node.output_bytes)
+
+            min_output_rows = min(min_output_rows, int(node.output_rows))
+            max_output_rows = max(max_output_rows, int(node.output_rows))
 
             min_input_wait_us = min(min_input_wait_us, input_wait)
             max_input_wait_us = max(max_input_wait_us, input_wait)
@@ -137,7 +143,13 @@ def merge_plan(datas: list):
                                 input_bytes="{}({})".format(format(total_input_bytes, ","),
                                                             to_memory_readable(total_input_bytes)),
                                 input_rows=format(total_input_rows, ","),
-                                output_rows=format(total_output_rows, ","),
+                                # output_rows=format(total_output_rows, ","),
+                                output_rows="{}({},{},{})".format(
+                                    format(int(total_output_rows), ','),
+                                    format(int(min_output_rows), ','),
+                                    format(int(max_output_rows), ','),
+                                    format(int(total_output_rows / length), ',')
+                                ),
                                 output_bytes="{}({})".format(format(total_output_bytes, ","),
                                                              to_memory_readable(total_output_bytes)),
                                 parent_ids=fnode.parent_ids,

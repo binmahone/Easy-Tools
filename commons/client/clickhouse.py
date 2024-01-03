@@ -65,6 +65,9 @@ class CHClient(BaseClient):
     def support_external(self) -> bool:
         return False
 
+    def support_low_cardinality(self) -> bool:
+        return True
+
     def partition_by_sql(self, shard_by_column):
         if len(shard_by_column) == 0:
             return ""

@@ -37,7 +37,13 @@ class Column(object):
         self.default = d
 
     def to_sql(self, engine):
-        return "{} {} {} {}".format(self.name, engine.trans_column_type(self.type),
+        col_type = engine.trans_column_type(self.type)
+
+        if engine.support_low_cardinality() and (
+                self.name in {"l_returnflag", "l_linestatus", "l_shipinstruct", "l_shipmode"}):
+            col_type = "LowCardinality({})".format(col_type)
+
+        return "{} {} {} {}".format(self.name, col_type,
                                     engine.trans_column_nullable(self.nullable),
                                     engine.trans_column_default_value(self.default))
 
